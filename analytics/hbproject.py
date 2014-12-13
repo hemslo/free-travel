@@ -7,7 +7,7 @@
 import nltk
 import jieba
 import json
-
+from pprint import pprint
 # for every country get its posts count 
 
 
@@ -24,15 +24,20 @@ def get_country(data):
 			score = score_of_count(view_count, comment_count, like_count)
 			country[country_name] += score
 			country[country_name] += score_of_text(i['text'])
+			print country[country_name]
 	return country
 
 def score_of_count(view_count, comment_count, like_count):
 	return (float(comment_count) + float(like_count))  / view_count 
 
 def score_of_text(text):
+	from snownlp import SnowNLP
 	doc = list(jieba.cut(text))
+
+	s = SnowNLP(text)
+
+	return s.sentiments
 	
-	return 0.0
 
 if __name__ == '__main__':
 	data = [{'country_name': '中国','posts_count': 3.0, 'posts':[{'view_count':20000,'comment_count':100,'like_count':100,'publish_time':20131208,'text':'是健康的减肥卡拉斯京地方'}]},
